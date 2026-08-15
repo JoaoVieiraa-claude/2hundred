@@ -107,7 +107,7 @@
   .hero{
     position:relative; overflow:hidden;
     display:flex; align-items:center;
-    min-height:min(90vh,780px);
+    min-height:min(90svh,780px);   /* svh = altura estável no celular (sem pulo da barra) */
   }
   /* camada do vídeo de fundo */
   .hero-bg{ position:absolute; inset:0; z-index:0; }
@@ -566,13 +566,9 @@
   .faq .a{ padding:0 22px 20px; color:var(--ink-dim); font-size:14.5px; line-height:1.65; }
 
   @media (max-width:720px){
-    /* esteira vira swipe manual com snap (sem conflito com o scroll do dedo) */
-    .reel{ overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch;
-      scrollbar-width:none; }
-    .reel::-webkit-scrollbar{ display:none; }
-    .reel-track{ animation:none; width:max-content; }
-    .reel-item{ scroll-snap-align:center; height:clamp(300px,58vh,460px); }
-    .reel-item.dup{ display:none; }
+    /* esteira SEGUE andando sozinha no celular (não vira mais swipe manual) */
+    .reel-item{ height:clamp(210px,40vh,320px); }   /* menor pra respirar melhor no cel */
+    .reel-track{ animation-duration:38s; }          /* um tico mais rápido no celular */
   }
 
   /* ---------------- A11Y ---------------- */
@@ -603,9 +599,10 @@
     .project, .reveal{ opacity:1; transform:none; }
     .hero-inner > *, .scroll-cue{ opacity:1; transform:none; }
     .grain, .scroll-cue{ display:none; }
-    /* esteira parada = swipe manual, sem itens duplicados */
-    .reel{ overflow-x:auto; }
-    .reel-item.dup{ display:none; }
+    /* EXCEÇÃO: a esteira é o conteúdo principal do site (é a prova do trabalho),
+       então ela segue rodando — porém BEM devagar, pra continuar suave/acessível. */
+    .reel-track{ animation:reel 95s linear infinite !important; }
+    .reel-item.dup{ display:block !important; }
   }
 </style>
 </head>
