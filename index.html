@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>2hundred · Product Motion</title>
+
+<!-- ============================================================
+     PORTFÓLIO DE MOTION DESIGN — Kayque & Vieira
+     Identidade: azul/roxo · disposição orgânica
+     Página feita pra linkar no cold email.
+
+     COMO TROCAR OS PLACEHOLDERS PELOS VÍDEOS:
+       Procure no HTML por:  COLE O VÍDEO AQUI
+       Cada slot traz as 2 opções (mp4 ou YouTube) e a proporção é por vídeo.
+     ============================================================ -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<style>
+  :root{
+    /* ---- Warm Cinematic — espresso quente + âmbar (base escura, porém acolhedora) ---- */
+    --bg:        #1a1512;   /* espresso (base) — não o indigo frio de antes */
+    --surface:   #241d17;   /* fundo do quadro de vídeo / cards */
+    --surface-2: #2e2620;
+    --line:      #3a2f25;   /* bordas quentes */
+    --line-soft: #2c241d;
+
+    --ink:       #f3ece1;   /* texto principal (creme) */
+    --ink-dim:   #c3b5a1;   /* secundário */
+    --ink-faint: #8f8272;   /* metadados */
+
+    --accent:    #f0a83c;   /* âmbar */
+    --accent-2:  #f5c46f;   /* dourado claro */
+    --grad:      linear-gradient(135deg,#f2ad42 0%,#e0842c 100%);
+    --ok:        #7ee29a;   /* dot "available" */
+
+    --maxw: 960px;
+    --radius: 16px;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Inter",system-ui,sans-serif;
+    font-size:16px; line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+  }
+  ::selection{ background:var(--accent); color:#fff; }
+  a{ color:inherit; text-decoration:none; }
+
+  /* ---------------- FUNDO ORGÂNICO (blobs) ---------------- */
+  .bg{
+    position:fixed; inset:0; z-index:-2; overflow:hidden;
+    background:
+      radial-gradient(55% 45% at 100% -5%, rgba(224,132,44,.32), transparent 60%),
+      radial-gradient(48% 42% at -10% 22%, rgba(240,180,110,.22), transparent 60%),
+      radial-gradient(60% 50% at 50% 112%, rgba(196,120,44,.26), transparent 60%),
+      radial-gradient(40% 35% at 82% 65%, rgba(230,175,95,.14), transparent 60%),
+      var(--bg);
+  }
+  .blob{ position:absolute; border-radius:50%; filter:blur(70px); opacity:.58; }
+  .blob.b1{ width:460px; height:460px; top:-140px; right:-80px;
+            background:radial-gradient(circle,#c9822a,transparent 70%); animation:drift1 22s ease-in-out infinite; }
+  .blob.b2{ width:380px; height:380px; top:38%; left:-160px;
+            background:radial-gradient(circle,#e0a860,transparent 70%); animation:drift2 26s ease-in-out infinite; }
+  .blob.b3{ width:520px; height:520px; bottom:-180px; right:-120px;
+            background:radial-gradient(circle,#8a4f1a,transparent 70%); animation:drift1 30s ease-in-out infinite; }
+  /* meia-lua orgânica (eco do estilo Canva), bem sutil */
+  .arc{ position:absolute; border-radius:50%; opacity:.05; background:var(--grad); }
+  .arc.a1{ width:340px; height:340px; top:120px; left:-190px; }
+  .arc.a2{ width:280px; height:280px; bottom:8%; right:-170px; }
+  @keyframes drift1{ 0%,100%{ transform:translate(0,0); } 50%{ transform:translate(-26px,32px); } }
+  @keyframes drift2{ 0%,100%{ transform:translate(0,0); } 50%{ transform:translate(30px,-24px); } }
+
+  /* ---------------- HEADER ---------------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px clamp(20px,5vw,48px);
+    background:color-mix(in srgb, var(--bg) 72%, transparent);
+    backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--line-soft);
+  }
+  .brand{ display:flex; align-items:center; gap:11px; }
+  .mark{
+    width:30px; height:30px; border-radius:9px;
+    background:var(--grad); display:grid; place-items:center;
+    box-shadow:0 6px 18px rgba(224,132,44,.35);
+  }
+  .mark svg{ width:15px; height:15px; stroke:#fff; fill:none; stroke-width:2.2; }
+  .brand b{ font-family:"Sora",sans-serif; font-weight:700; font-size:17px; letter-spacing:-.02em; }
+  .brand b span{ color:var(--ink-faint); font-weight:500; }
+  .status{ display:flex; align-items:center; gap:8px; font-size:13px; color:var(--ink-dim); }
+  .dot{ width:7px; height:7px; border-radius:50%; background:var(--ok);
+        box-shadow:0 0 0 0 rgba(126,226,154,.6); animation:pulse 2.4s infinite; }
+  @keyframes pulse{ 0%{ box-shadow:0 0 0 0 rgba(126,226,154,.5); }
+    70%{ box-shadow:0 0 0 7px rgba(126,226,154,0); } 100%{ box-shadow:0 0 0 0 rgba(126,226,154,0); } }
+
+  /* ---------------- HERO (com vídeo de fundo) ---------------- */
+  .hero{
+    position:relative; overflow:hidden;
+    display:flex; align-items:center;
+    min-height:min(90vh,780px);
+  }
+  /* camada do vídeo de fundo */
+  .hero-bg{ position:absolute; inset:0; z-index:0; }
+  .hero-bg video{ width:100%; height:100%; object-fit:cover; display:block; }
+  /* camada de linhas animadas (flow field) — desenhada por JS, atrás do texto */
+  .hero-flow{ position:absolute; inset:0; width:100%; height:100%; display:block; z-index:0; pointer-events:none; }
+  /* placeholder animado (vale enquanto não tem o mp4) */
+  .hero-bg .ph{
+    position:absolute; inset:0;
+    background:
+      radial-gradient(60% 60% at 20% 30%, rgba(224,132,44,.55), transparent 60%),
+      radial-gradient(55% 55% at 80% 20%, rgba(245,196,111,.4), transparent 60%),
+      radial-gradient(70% 70% at 70% 90%, rgba(150,86,26,.5), transparent 60%),
+      #1a1512;
+    background-size:200% 200%, 200% 200%, 200% 200%, auto;
+    animation:heroshift 16s ease-in-out infinite;
+  }
+  @keyframes heroshift{
+    0%,100%{ background-position:0% 50%,100% 50%,50% 100%,0 0; }
+    50%{ background-position:100% 50%,0% 50%,50% 0%,0 0; }
+  }
+  /* overlay escuro pra leitura + blend no fundo da página */
+  .hero-bg::after{
+    content:""; position:absolute; inset:0;
+    background:
+      linear-gradient(90deg, rgba(26,21,18,.9) 0%, rgba(26,21,18,.62) 46%, rgba(26,21,18,.34) 100%),
+      linear-gradient(180deg, rgba(26,21,18,.36) 0%, transparent 32%, rgba(26,21,18,.82) 100%);
+  }
+  .hero-inner{
+    position:relative; z-index:1; width:100%;
+    max-width:var(--maxw); margin:0 auto;
+    padding:clamp(90px,14vw,130px) clamp(20px,5vw,48px) clamp(70px,10vw,100px);
+  }
+  .pill{
+    display:inline-flex; align-items:center; gap:9px;
+    padding:8px 15px 8px 8px; border-radius:100px;
+    border:1px solid var(--line); background:rgba(46,38,30,.5);
+    font-size:12.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-dim);
+  }
+  .pill .badge{ width:24px; height:24px; border-radius:7px; background:var(--grad);
+                display:grid; place-items:center; }
+  .pill .badge svg{ width:12px; height:12px; stroke:#fff; fill:none; stroke-width:2.4; }
+  .hero h1{
+    font-family:"Sora",sans-serif; font-weight:800;
+    font-size:clamp(42px,9.4vw,92px); line-height:.98; letter-spacing:-.035em;
+    margin:26px 0 24px;
+  }
+  .hero h1 .g{ background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .hero p{ max-width:54ch; font-size:clamp(16px,2.4vw,19px); color:var(--ink-dim); line-height:1.55; }
+  /* tags orgânicas de nicho no hero */
+  .tags{ display:flex; flex-wrap:wrap; gap:10px; margin-top:30px; }
+  .tags span{
+    padding:7px 14px; border-radius:100px; font-size:13px; color:var(--ink-dim);
+    border:1px solid var(--line-soft); background:rgba(38,31,24,.55);
+  }
+  .tags span:nth-child(odd){ transform:rotate(-1.4deg); }
+  .tags span:nth-child(even){ transform:rotate(1.4deg); }
+
+  /* ---------------- LISTA DE VÍDEOS ---------------- */
+  .work{
+    max-width:var(--maxw); margin:0 auto;
+    padding:clamp(30px,6vw,50px) clamp(20px,5vw,48px) clamp(60px,10vw,110px);
+    display:flex; flex-direction:column; gap:clamp(58px,9vw,100px);
+  }
+  .project{ position:relative; opacity:0; transform:translateY(28px);
+            transition:opacity .7s ease, transform .7s ease; }
+  .project.in-view{ opacity:1; transform:none; }
+
+  /* número fantasma (textura editorial) */
+  .ghost{
+    position:absolute; top:-34px; right:6px; z-index:0;
+    font-family:"Sora",sans-serif; font-weight:800; font-size:clamp(66px,13vw,120px);
+    line-height:1; letter-spacing:-.04em; color:rgba(245,196,111,.07);
+    pointer-events:none;
+  }
+  .project.right .ghost{ right:auto; left:6px; }
+
+  /* pílula de nicho sobreposta ao quadro (disposição orgânica) */
+  .tag{
+    position:relative; z-index:2; display:inline-flex; align-items:center; gap:10px;
+    margin:0 0 -20px 16px; padding:9px 16px 9px 9px; border-radius:100px;
+    background:rgba(38,31,24,.82); border:1px solid var(--line);
+    backdrop-filter:blur(8px); transform:rotate(-1.5deg);
+    box-shadow:0 10px 28px rgba(0,0,0,.35);
+  }
+  /* a pílula é inline; alinhamos pelo texto do slot (funciona p/ qualquer proporção) */
+  .project{ text-align:left; }
+  .project.right{ text-align:right; }
+  .project.right .tag{ margin-left:auto; margin-right:16px; transform:rotate(1.5deg); }
+  .tag .badge{ width:26px; height:26px; border-radius:8px; background:var(--grad); display:grid; place-items:center; }
+  .tag .badge svg{ width:13px; height:13px; stroke:#fff; fill:none; stroke-width:2.4; }
+  .tag .idx{ font-family:"Sora",sans-serif; font-weight:700; font-size:13px; color:var(--accent-2); }
+  .tag .name{ font-weight:600; font-size:14.5px; letter-spacing:.02em; }
+
+  /* quadro do vídeo */
+  .frame{
+    position:relative; z-index:1; width:100%;
+    aspect-ratio:16 / 9;                 /* padrão horizontal */
+    background:var(--surface); border:1px solid var(--line);
+    border-radius:var(--radius); overflow:hidden;
+    box-shadow:0 24px 60px rgba(0,0,0,.4);
+  }
+  /* PROPORÇÃO POR SLOT — adicione a classe no <div class="frame ...">:
+     (nada) = 16:9 horizontal  ·  vertical = 9:16 (reels/tiktok)  ·  square = 1:1 */
+  .frame.vertical{ aspect-ratio:9 / 16; max-width:360px; }
+  .frame.square{   aspect-ratio:1 / 1;  max-width:520px; }
+  /* vídeos estreitos encostam no lado do slot (mantém a alternância orgânica) */
+  .project.right .frame.vertical, .project.right .frame.square{ margin-left:auto; }
+  .frame video, .frame iframe{
+    position:absolute; inset:0; width:100%; height:100%;
+    object-fit:cover; border:0; display:block;
+  }
+  /* legenda embaixo */
+  .cap{ display:flex; align-items:center; gap:12px; margin-top:16px; padding:0 4px;
+        font-size:13px; color:var(--ink-faint); }
+  .project.right .cap{ justify-content:flex-end; }
+  .cap .rule{ flex:1; height:1px; background:var(--line-soft); max-width:120px; }
+  .project.right .cap .rule{ order:-1; }
+
+  /* placeholder animado (sai quando colar o vídeo) */
+  .placeholder{
+    position:absolute; inset:0; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:16px;
+    background:
+      radial-gradient(120% 120% at 28% 18%, #2a221b 0%, transparent 55%),
+      radial-gradient(120% 120% at 82% 88%, #221b15 0%, transparent 60%),
+      var(--surface);
+  }
+  .placeholder::before{ content:""; position:absolute; inset:-40%;
+    background:linear-gradient(115deg,transparent 40%,rgba(245,196,111,.07) 50%,transparent 60%);
+    animation:sweep 5.5s linear infinite; }
+  @keyframes sweep{ 0%{ transform:translateX(-30%); } 100%{ transform:translateX(30%); } }
+  .play{ position:relative; z-index:1; width:58px; height:58px; border-radius:50%;
+         background:var(--grad); display:grid; place-items:center;
+         box-shadow:0 12px 30px rgba(224,132,44,.4); }
+  .play svg{ width:20px; height:20px; fill:#fff; margin-left:3px; }
+  .ph-label{ position:relative; z-index:1; font-size:12px; letter-spacing:.12em;
+             text-transform:uppercase; color:var(--ink-faint); }
+
+  /* ---------------- CTA ---------------- */
+  .cta-wrap{ position:relative; border-top:1px solid var(--line-soft);
+             background:radial-gradient(60% 120% at 50% 0%, rgba(224,132,44,.10), transparent 60%), #1a1512; }
+  .cta{ max-width:var(--maxw); margin:0 auto; text-align:center;
+        padding:clamp(66px,11vw,120px) clamp(20px,5vw,48px); }
+  .cta h2{ font-family:"Sora",sans-serif; font-weight:800;
+           font-size:clamp(32px,6.4vw,62px); letter-spacing:-.03em; line-height:1.02; margin-bottom:18px; }
+  .cta h2 .g{ background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .cta p{ color:var(--ink-dim); font-size:clamp(15px,2.2vw,18px); margin-bottom:36px; }
+  .cta-note{ margin-top:18px; font-size:13.5px; color:var(--ink-faint); }
+  .btn-row{ display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+  .btn{ display:inline-flex; align-items:center; gap:10px; padding:15px 26px; border-radius:100px;
+        font-size:15px; font-weight:600; letter-spacing:.01em;
+        transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
+  .btn svg{ width:18px; height:18px; }
+  .btn-primary{ background:var(--grad); color:#fff; box-shadow:0 12px 30px rgba(224,132,44,.4); }
+  .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 16px 38px rgba(224,132,44,.5); }
+  .btn-ghost{ border:1px solid var(--line); color:var(--ink); }
+  .btn-ghost:hover{ transform:translateY(-2px); border-color:var(--accent-2); }
+
+  .colophon{ max-width:var(--maxw); margin:0 auto;
+             padding:22px clamp(20px,5vw,48px) 42px;
+             display:flex; justify-content:space-between; align-items:center;
+             font-size:12.5px; color:var(--ink-faint); flex-wrap:wrap; gap:8px; }
+
+  /* ---------------- PLANOS (cards orgânicos) ---------------- */
+  .plans-wrap{ border-top:1px solid var(--line-soft); }
+  .plans-head{ max-width:var(--maxw); margin:0 auto; text-align:center;
+    padding:clamp(64px,10vw,110px) clamp(20px,5vw,48px) clamp(34px,5vw,52px); }
+  .plans-head h2{ font-family:"Sora",sans-serif; font-weight:800;
+    font-size:clamp(30px,5.6vw,56px); letter-spacing:-.03em; line-height:1.03; }
+  .plans-head h2 .g{ background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .plans-head p{ color:var(--ink-dim); margin-top:14px; font-size:clamp(14px,2vw,16px); }
+
+  .plans{ max-width:var(--maxw); margin:0 auto;
+    padding:6px clamp(20px,5vw,48px) clamp(56px,9vw,96px);
+    display:grid; grid-template-columns:repeat(3,1fr); gap:26px; align-items:stretch; }
+
+  /* a "sombra" deslocada atrás = efeito de card espalhado/orgânico */
+  .plan{ position:relative; }
+  .plan::before{ content:""; position:absolute; inset:0; z-index:0;
+    background:rgba(0,0,0,.32); border-radius:20px;
+    transform:translate(11px,15px) rotate(-2.2deg); }
+  .plan:nth-child(2)::before{ transform:translate(-9px,15px) rotate(2.2deg); }
+  .plan:nth-child(3)::before{ transform:translate(11px,15px) rotate(-1.6deg); }
+
+  .plan .card{ position:relative; z-index:1; height:100%;
+    background:var(--surface); border:1px solid var(--line);
+    border-radius:18px; overflow:hidden; display:flex; flex-direction:column;
+    transition:transform .25s ease, box-shadow .25s ease; }
+  .plan:hover .card{ transform:translateY(-4px); box-shadow:0 26px 54px rgba(0,0,0,.45); }
+  .plan.pop .card{ border-color:rgba(245,196,111,.5); }
+
+  .plan .head{ display:flex; align-items:center; gap:12px;
+    padding:18px 20px; border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(224,132,44,.14),transparent); }
+  .plan .head .badge{ width:30px; height:30px; border-radius:9px; background:var(--grad);
+    display:grid; place-items:center; flex-shrink:0; }
+  .plan .head .badge svg{ width:14px; height:14px; stroke:#fff; fill:none; stroke-width:2.4; }
+  .plan .head b{ font-family:"Sora",sans-serif; font-weight:700; font-size:18px; letter-spacing:-.01em; }
+
+  .plan .body{ flex:1; display:flex; flex-direction:column; justify-content:space-between;
+    gap:26px; padding:28px 20px 30px; text-align:center; }
+  .plan .desc{ color:var(--ink-dim); font-size:14.5px; line-height:1.55; }
+  .plan .price{ font-family:"Sora",sans-serif; font-weight:700; font-size:clamp(24px,4vw,30px); }
+  .plan .price small{ display:block; font-family:"Inter",sans-serif; font-weight:400;
+    font-size:12.5px; color:var(--ink-faint); letter-spacing:.02em; margin-top:5px; }
+
+  .ribbon{ position:absolute; z-index:2; top:-11px; left:50%; transform:translateX(-50%);
+    padding:5px 15px; border-radius:100px; background:var(--grad); color:#fff;
+    font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase;
+    box-shadow:0 8px 20px rgba(224,132,44,.45); white-space:nowrap; }
+
+  /* passos "how it works" — número no selo + pill de detalhe */
+  .plan .head .badge b{ font-family:"Sora",sans-serif; font-weight:800; font-size:15px; color:#fff; line-height:1; }
+  .plan .meta{ align-self:center; padding:9px 18px; border-radius:100px;
+    border:1px solid #e7d5b4; background:#f4e8d2;
+    font-size:13px; letter-spacing:.02em; color:#61513a; white-space:nowrap; }
+  .plan .meta b{ color:#7e4b08; font-weight:700; }
+
+  @media (max-width:720px){
+    .plans{ grid-template-columns:1fr; gap:36px; }
+    .plan::before{ transform:translate(9px,13px) rotate(-1.6deg) !important; }
+  }
+
+  /* ============================================================
+     VIDA EXTRA — animações e micro-interações
+     (tudo em transform/opacity; desligado em reduced-motion)
+     ============================================================ */
+
+  /* grão de filme sutil por cima de tudo (dá textura, não atrapalha) */
+  .grain{
+    position:fixed; inset:0; z-index:2; pointer-events:none;
+    opacity:.045; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation:grain 7s steps(6) infinite;
+  }
+  @keyframes grain{
+    0%,100%{ transform:translate(0,0); } 20%{ transform:translate(-4%,3%); }
+    40%{ transform:translate(3%,-4%); } 60%{ transform:translate(-3%,-2%); } 80%{ transform:translate(4%,2%); }
+  }
+
+  /* entrada escalonada do hero */
+  @keyframes rise{ from{ opacity:0; transform:translateY(22px); } to{ opacity:1; transform:none; } }
+  .hero-inner > *{ animation:rise .85s cubic-bezier(.2,.7,.2,1) backwards; }
+  .hero-inner .pill{ animation-delay:.05s; }
+  .hero-inner h1{ animation-delay:.16s; }
+  .hero-inner p{ animation-delay:.3s; }
+  .hero-inner .tags{ animation-delay:.42s; }
+
+  /* gradiente animado nos títulos em destaque */
+  .hero h1 .g, .cta h2 .g, .plans-head h2 .g{
+    background-size:220% auto; animation:shimmer 7s linear infinite;
+  }
+  @keyframes shimmer{ to{ background-position:220% center; } }
+
+  /* spotlight que segue o mouse no hero (acima do vídeo, abaixo do texto) */
+  .hero .spot{
+    position:absolute; inset:0; z-index:0; pointer-events:none; opacity:0;
+    transition:opacity .45s ease;
+    background:radial-gradient(420px 420px at var(--hx,50%) var(--hy,30%), rgba(245,196,111,.16), transparent 62%);
+  }
+  .hero:hover .spot{ opacity:1; }
+
+  /* tags de nicho — hover levanta e endireita */
+  .tags span{ transition:transform .25s ease, border-color .25s ease, color .25s ease; cursor:default; }
+  .tags span:hover{ transform:translateY(-3px) rotate(0) !important; border-color:var(--accent-2); color:var(--ink); }
+
+  /* scroll cue no rodapé do hero */
+  .scroll-cue{
+    position:absolute; left:50%; bottom:24px; transform:translateX(-50%); z-index:1;
+    display:flex; flex-direction:column; align-items:center; gap:9px;
+    font-size:10.5px; letter-spacing:.24em; text-transform:uppercase; color:var(--ink-faint);
+    animation:rise .85s ease .6s backwards;
+  }
+  .scroll-cue .mouse{ width:22px; height:34px; border:1.5px solid var(--line); border-radius:12px; position:relative; }
+  .scroll-cue .mouse::after{
+    content:""; position:absolute; top:6px; left:50%; width:3px; height:6px; border-radius:2px;
+    background:var(--accent-2); transform:translateX(-50%); animation:wheel 1.8s ease-in-out infinite;
+  }
+  @keyframes wheel{ 0%{ opacity:0; transform:translate(-50%,0); } 30%{ opacity:1; } 100%{ opacity:0; transform:translate(-50%,11px); } }
+
+  /* faixa marquee (capabilities rolando) entre hero e projetos */
+  .marquee{
+    overflow:hidden; border-block:1px solid var(--line-soft);
+    background:rgba(38,31,24,.32);
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
+            mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
+  }
+  .marquee .track{
+    display:inline-flex; align-items:center; white-space:nowrap;
+    padding:15px 0; animation:scroll-x 30s linear infinite; will-change:transform;
+  }
+  .marquee:hover .track{ animation-play-state:paused; }
+  .marquee .track span{
+    font-family:"Sora",sans-serif; font-weight:700; letter-spacing:.01em;
+    font-size:clamp(15px,2.3vw,20px); color:var(--ink-dim); padding:0 26px;
+    display:inline-flex; align-items:center; gap:26px;
+  }
+  .marquee .track span::before{ content:"↘"; color:var(--accent-2); font-size:.8em; }
+  @keyframes scroll-x{ to{ transform:translateX(-50%); } }
+
+  /* frames de vídeo — lift + borda gradiente + glow que segue o cursor */
+  .frame{ transition:transform .32s cubic-bezier(.2,.7,.2,1), box-shadow .32s ease; }
+  .project:hover .frame{
+    transform:translateY(-5px);
+    box-shadow:0 34px 74px rgba(0,0,0,.5);
+  }
+  .frame::after{
+    content:""; position:absolute; inset:0; z-index:4; pointer-events:none;
+    border-radius:var(--radius); padding:1px; background:var(--grad); opacity:0;
+    transition:opacity .32s ease;
+    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor; mask-composite:exclude;
+  }
+  .project:hover .frame::after{ opacity:.7; }
+  .frame .spot{
+    position:absolute; inset:0; z-index:3; pointer-events:none; opacity:0;
+    transition:opacity .32s ease;
+    background:radial-gradient(180px 180px at var(--mx,50%) var(--my,50%), rgba(245,196,111,.2), transparent 68%);
+  }
+  .project:hover .frame .spot{ opacity:1; }
+
+  /* botão de play do placeholder — respiro */
+  .play{ animation:playpulse 2.6s ease-in-out infinite; }
+  @keyframes playpulse{
+    0%,100%{ transform:scale(1); box-shadow:0 12px 30px rgba(224,132,44,.4); }
+    50%{ transform:scale(1.09); box-shadow:0 18px 42px rgba(224,132,44,.62); }
+  }
+
+  /* plano "most picked" — glow pulsante + ribbon shimmer */
+  .plan.pop .card{ animation:popglow 3.6s ease-in-out infinite; }
+  @keyframes popglow{
+    0%,100%{ box-shadow:0 0 0 1px rgba(245,196,111,.45), 0 0 30px rgba(224,132,44,.22); }
+    50%{ box-shadow:0 0 0 1px rgba(245,196,111,.8), 0 0 48px rgba(224,132,44,.44); }
+  }
+  .ribbon{ background-size:220% auto; animation:shimmer 4.5s linear infinite; }
+
+  /* botões — shine sweep no hover */
+  .btn-primary{ position:relative; overflow:hidden; }
+  .btn-primary::after{
+    content:""; position:absolute; top:0; left:-130%; width:55%; height:100%;
+    background:linear-gradient(100deg,transparent,rgba(255,255,255,.38),transparent);
+    transform:skewX(-18deg); pointer-events:none;
+  }
+  .btn-primary:hover::after{ animation:shine .9s ease; }
+  @keyframes shine{ to{ left:150%; } }
+
+  /* ============================================================
+     CORPO DO SITE — esteira + seções (por que vídeo / o que fazemos /
+     quem somos / FAQ). Mesma identidade azul-roxo.
+     ============================================================ */
+
+  /* eyebrow + reveal genérico reutilizado nas seções */
+  .eyebrow{ display:inline-flex; align-items:center; gap:8px; margin-bottom:14px;
+    font-size:12px; letter-spacing:.16em; text-transform:uppercase; font-weight:600; color:var(--accent-2); }
+  .eyebrow::before{ content:"↘"; }
+  .reveal{ opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in-view{ opacity:1; transform:none; }
+  .section-h2{ font-family:"Sora",sans-serif; font-weight:800; letter-spacing:-.03em; line-height:1.05;
+    font-size:clamp(28px,5vw,50px); }
+  .section-h2 .g{ background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
+
+  /* ---------------- PORTFÓLIO — esteira horizontal ---------------- */
+  .reel-wrap{ padding:clamp(30px,6vw,56px) 0; border-block:1px solid var(--line-soft);
+    background:radial-gradient(70% 100% at 50% 0%, rgba(224,132,44,.06), transparent 55%), #17120f; }
+  .reel-head{ max-width:var(--maxw); margin:0 auto 24px; padding:0 clamp(20px,5vw,48px);
+    display:flex; align-items:flex-end; justify-content:space-between; gap:14px; flex-wrap:wrap; }
+  .reel-head h2{ font-family:"Sora",sans-serif; font-weight:800; letter-spacing:-.03em;
+    font-size:clamp(26px,4.4vw,44px); line-height:1.02; }
+  .reel-head p{ color:var(--ink-dim); font-size:14px; }
+  .reel{ position:relative; overflow:hidden;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);
+            mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent); }
+  .reel-track{ display:flex; gap:clamp(16px,2.2vw,26px); width:max-content;
+    padding:12px clamp(16px,2.2vw,26px); animation:reel 48s linear infinite; will-change:transform; }
+  .reel:hover .reel-track{ animation-play-state:paused; }
+  @keyframes reel{ to{ transform:translateX(-50%); } }   /* -50%: itens duplicados = loop sem costura */
+
+  .reel-item{ position:relative; flex:0 0 auto;
+    height:clamp(280px,44vh,420px); aspect-ratio:16 / 9;
+    border-radius:var(--radius); overflow:hidden;
+    background:var(--surface); border:1px solid var(--line);
+    box-shadow:0 24px 60px rgba(0,0,0,.4); transition:transform .3s cubic-bezier(.2,.7,.2,1); }
+  .reel-item.vertical{ aspect-ratio:9 / 16; }   /* reels/tiktok */
+  .reel-item.square{   aspect-ratio:1 / 1;  }   /* feed */
+  .reel-item:hover{ transform:translateY(-6px); }
+  .reel-item video, .reel-item iframe{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border:0; display:block; }
+  .reel-item::after{ content:""; position:absolute; inset:0; z-index:4; pointer-events:none;
+    border-radius:var(--radius); padding:1px; background:var(--grad); opacity:0; transition:opacity .3s ease;
+    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor; mask-composite:exclude; }
+  .reel-item:hover::after{ opacity:.7; }
+  .reel-item .rlabel{ position:absolute; z-index:3; left:12px; bottom:12px;
+    display:inline-flex; align-items:center; gap:8px; padding:7px 13px 7px 7px; border-radius:100px;
+    background:rgba(26,21,18,.66); border:1px solid var(--line); backdrop-filter:blur(8px);
+    font-size:13px; font-weight:600; }
+  .reel-item .rlabel .badge{ width:22px; height:22px; border-radius:7px; background:var(--grad); display:grid; place-items:center; }
+  .reel-item .rlabel .badge svg{ width:11px; height:11px; stroke:#fff; fill:none; stroke-width:2.6; }
+
+  /* ---------------- blocos de conteúdo genéricos ---------------- */
+  .section{ max-width:var(--maxw); margin:0 auto; padding:clamp(58px,9vw,104px) clamp(20px,5vw,48px); }
+  .section > p.lead{ color:var(--ink-dim); font-size:clamp(15px,2.1vw,18px); max-width:60ch; margin-top:16px; line-height:1.6; }
+
+  .cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:20px; margin-top:40px; }
+  /* 2×2 equilibrado (usado no "o que fazemos", que tem 4 cards) */
+  .cards.two{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  @media (max-width:600px){ .cards.two{ grid-template-columns:1fr; } }
+  .bcard{ background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:24px;
+    transition:transform .25s ease, border-color .25s ease; }
+  .bcard:hover{ transform:translateY(-5px); border-color:var(--accent-2); }
+  .bcard .ic{ width:44px; height:44px; border-radius:12px; background:var(--grad); display:grid; place-items:center; margin-bottom:16px;
+    box-shadow:0 10px 24px rgba(224,132,44,.35); }
+  .bcard .ic svg{ width:20px; height:20px; stroke:#fff; fill:none; stroke-width:2; }
+  .bcard h3{ font-family:"Sora",sans-serif; font-weight:700; font-size:17px; margin-bottom:8px; letter-spacing:-.01em; }
+  .bcard p{ color:var(--ink-dim); font-size:14px; line-height:1.55; }
+
+  /* nichos (pills) do "o que fazemos" */
+  .niches{ display:flex; flex-wrap:wrap; gap:10px; margin-top:26px; }
+  .niches span{ padding:8px 15px; border-radius:100px; font-size:13.5px; color:var(--ink-dim);
+    border:1px solid var(--line-soft); background:rgba(38,31,24,.5); }
+  .niches span.plus{ color:var(--accent-2); border-color:var(--line); }
+
+  /* ---------------- quem somos ---------------- */
+  .who{ text-align:center; }
+  .who .lead{ margin:16px auto 0; text-align:center; }
+  .who-people{ display:flex; justify-content:center; gap:clamp(18px,4vw,34px); flex-wrap:wrap; margin-top:44px; }
+  .person{ display:flex; flex-direction:column; align-items:center; gap:14px; }
+  /* moldura de foto em retângulo arredondado (mesma linguagem dos cards) */
+  .person .av{ position:relative; width:clamp(150px,24vw,196px); aspect-ratio:4 / 5; border-radius:20px; overflow:hidden;
+    background:
+      radial-gradient(120% 90% at 30% 10%, rgba(224,132,44,.18), transparent 60%),
+      var(--surface);
+    border:1px solid var(--line); box-shadow:0 26px 54px rgba(0,0,0,.45);
+    transition:transform .28s cubic-bezier(.2,.7,.2,1), border-color .28s ease; }
+  .person:hover .av{ transform:translateY(-5px); border-color:var(--accent-2); }
+  /* ícone de câmera enquanto não há foto (some quando o <img> é colado) */
+  .person .av::after{ content:""; width:46px; height:46px; opacity:.6;
+    background:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c99a54' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z'/%3E%3Ccircle cx='12' cy='13' r='4'/%3E%3C/svg%3E"); }
+  .person .av img{ position:absolute; inset:0; z-index:1; width:100%; height:100%; object-fit:cover; }
+  .person b{ font-family:"Sora",sans-serif; font-weight:700; font-size:17px; }
+  .person span{ font-size:12.5px; color:var(--ink-faint); letter-spacing:.02em; }
+
+  /* ---------------- FAQ (acordeão nativo) ---------------- */
+  .faq{ max-width:780px; }
+  .faq details{ border:1px solid var(--line); border-radius:14px; background:var(--surface);
+    margin-bottom:13px; overflow:hidden; transition:border-color .2s ease; }
+  .faq details[open]{ border-color:rgba(245,196,111,.5); }
+  .faq summary{ cursor:pointer; list-style:none; padding:18px 22px; gap:16px;
+    display:flex; align-items:center; justify-content:space-between;
+    font-family:"Sora",sans-serif; font-weight:600; font-size:16px; }
+  .faq summary::-webkit-details-marker{ display:none; }
+  .faq summary::after{ content:"+"; color:var(--accent-2); font-size:24px; line-height:1; transition:transform .2s ease; }
+  .faq details[open] summary::after{ transform:rotate(45deg); }
+  .faq .a{ padding:0 22px 20px; color:var(--ink-dim); font-size:14.5px; line-height:1.65; }
+
+  @media (max-width:720px){
+    /* esteira vira swipe manual com snap (sem conflito com o scroll do dedo) */
+    .reel{ overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch;
+      scrollbar-width:none; }
+    .reel::-webkit-scrollbar{ display:none; }
+    .reel-track{ animation:none; width:max-content; }
+    .reel-item{ scroll-snap-align:center; height:clamp(300px,58vh,460px); }
+    .reel-item.dup{ display:none; }
+  }
+
+  /* ---------------- A11Y ---------------- */
+  a:focus-visible, .btn:focus-visible, summary:focus-visible{ outline:2px solid var(--accent-2); outline-offset:3px; border-radius:8px; }
+  /* ============================================================
+     RITMO DE COR POR SEÇÃO — cada seção puxa um tom diferente no
+     scroll (espresso → creme → charcoal → âmbar…). Nas seções claras
+     reescopamos os tokens de texto/superfície pra dark-on-light.
+     ============================================================ */
+  .section{ position:relative; }
+  .section.tone-cream::before, .section.tone-char::before{
+    content:""; position:absolute; z-index:-1; top:0; height:100%;
+    left:50%; margin-left:-50vw; width:100vw; }
+  .section.tone-cream::before{ background:#f3ece1; }
+  .section.tone-char::before{  background:#211a15; }
+  .tone-cream, .plans-wrap.tone-amber{
+    --ink:#2a2119; --ink-dim:#6f5f49; --ink-faint:#9a8a70;
+    --surface:#ffffff; --surface-2:#fbf5ea;
+    --line:#e6dbc8; --line-soft:#efe6d6;
+    --accent-2:#b9741e;
+    --grad:linear-gradient(135deg,#c9781d,#a85610);
+    color:var(--ink);
+  }
+  .plans-wrap.tone-amber{ background:#f7ead2; }
+
+  @media (prefers-reduced-motion:reduce){
+    *{ animation:none !important; transition:none !important; scroll-behavior:auto; }
+    .project, .reveal{ opacity:1; transform:none; }
+    .hero-inner > *, .scroll-cue{ opacity:1; transform:none; }
+    .grain, .scroll-cue{ display:none; }
+    /* esteira parada = swipe manual, sem itens duplicados */
+    .reel{ overflow-x:auto; }
+    .reel-item.dup{ display:none; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- fundo orgânico -->
+  <div class="bg" aria-hidden="true">
+    <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>
+    <span class="arc a1"></span><span class="arc a2"></span>
+  </div>
+  <!-- grão de filme sutil -->
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- ===================== HEADER ===================== -->
+  <header>
+    <!-- TROQUE "STUDIO" pelo nome de vocês -->
+    <div class="brand">
+      <span class="mark"><svg viewBox="0 0 24 24"><path d="M8 8l8 8m0 0v-6m0 6h-6"/></svg></span>
+      <b>2hundred<span>®</span></b>
+    </div>
+    <div class="status"><span class="dot"></span>Available for work</div>
+  </header>
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero">
+
+    <!-- VÍDEO DE FUNDO
+         >>> COLE O MP4 DE FUNDO AQUI <<<
+         Descomente a linha <video> abaixo, aponte pro seu arquivo e apague o <div class="ph">.
+         Dica: use seu MELHOR vídeo aqui (ex: o dos earbuds) — o fundo mexendo já vende.
+         O 'poster' é a imagem que aparece antes do vídeo carregar.
+    -->
+    <div class="hero-bg">
+      <video src="videos/hero.mp4" poster="videos/hero-poster.jpg" autoplay muted loop playsinline preload="metadata"></video>
+    </div>
+    <!-- glow que segue o mouse -->
+    <div class="spot" aria-hidden="true"></div>
+
+    <div class="hero-inner">
+      <span class="pill">
+        <span class="badge"><svg viewBox="0 0 24 24"><path d="M8 8l8 8m0 0v-6m0 6h-6"/></svg></span>
+        Motion &amp; 3D · Product Animation
+      </span>
+      <h1>Some of our<br><span class="g">projects</span> in motion.</h1>
+      <p>Short product animations built to stop the scroll, from 10 to 60 seconds. Sound off, autoplay on. Just scroll down and watch the work.</p>
+      <div class="tags">
+        <span>Beauty</span><span>Tech</span><span>Food</span><span>Fashion</span>
+      </div>
+    </div>
+
+    <!-- pista de scroll -->
+    <div class="scroll-cue" aria-hidden="true">
+      <span class="mouse"></span>Scroll
+    </div>
+  </section>
+
+  <!-- ===================== PORTFÓLIO · ESTEIRA ===================== -->
+  <!-- ESTEIRA HORIZONTAL: anda sozinha no desktop (pausa no hover) e vira
+       swipe com o dedo no celular. Cada <article class="reel-item"> é um vídeo.
+       • PROPORÇÃO: classe no reel-item — (nada)=16:9 · vertical=9:16 · square=1:1
+       • RÓTULO: <span class="rlabel"> é opcional (título livre) — apague se não quiser.
+       • QUANTIDADE: duplique/apague reel-items à vontade (mistura de nichos é livre).
+       IMPORTANTE (loop sem costura): a lista existe DUAS vezes — os itens marcados
+       .dup (aria-hidden) são a cópia. Ao adicionar/remover um vídeo, faça igual nas duas.
+       COLAR VÍDEO: dentro do reel-item, no lugar do <div class="placeholder">:
+         <video src="videos/x.mp4" autoplay muted loop playsinline preload="metadata"></video> -->
+  <section class="reel-wrap reveal">
+    <div class="reel-head">
+      <div>
+        <span class="eyebrow">Selected work</span>
+        <h2>The reel.</h2>
+      </div>
+      <p>Muted, looping, autoplay. It just runs.</p>
+    </div>
+
+    <div class="reel">
+      <div class="reel-track">
+
+        <!-- ===== ITENS (leva 1) — 12 vídeos do portfólio ===== -->
+        <article class="reel-item">
+          <span class="rlabel"><span class="badge"><svg viewBox="0 0 24 24"><path d="M8 8l8 8m0 0v-6m0 6h-6"/></svg></span>Tech</span>
+          <video src="videos/reel-alexa-tech.mp4" autoplay muted loop playsinline preload="metadata"></video>
+        </article>
+        <article class="reel-item">
+          <span class="rlabel"><span class="badge"><svg viewBox="0 0 24 24"><path d="M8 8l8 8m0 0v-6m0 6h-6"/></svg></span>Beauty</span>
+          <video src="videos/reel-aqualea-beauty.mp4" autoplay muted loop playsinline preload="metadata"></video>
+        </article>
+        <article class="reel-item">
+          <span class="rlabel"><span class="badge"><svg viewBox="0 0 24 24"><path d="M8 8l8 8m0 0v-6m0 6h-6"/></svg></span>Food</span>
+          <video src="videos/reel-sorvete-food.mp4" autoplay muted loop playsinline preload="metadata"></video>
+        </article>
+        <article class="reel-item">
+          <span class="rlabel"><span class="badge"><svg viewBox="0 0 24 24"><path d="M8 8l8 8m0 0v-6m0 6h-6"/></svg></span>Fashion</span>
+          <video src="videos/reel-tenisvans-moda.mp4" autoplay muted loop playsinline preload="metadata"></video>
+        </article>
+        <article class="reel-item">
+          <span class="rlabel"><span class="badge"><svg viewBox="0 0 24 24"><path d="M8 8l8 8m0 0v-6m0 6h-6"/></svg></span>Tech</span>
+          <video src="videos/reel-airpods-tech.mp4" autoplay muted loop playsinline preload="metadata"></video>
+        </article>
+        <article class="reel-item">
+          <span class="rlabel"><span class="badge"><svg viewBox="0 0 24 24"><path d="M8 8l8 8m0 0v-6m0 6h-6"/></svg></span>Beauty</span>
+          <video src="videos/reel-hidratante-beauty.mp4" autoplay muted loop playsinline preload="metadata"></video>
+        </article>
+        <article class="reel-item vertical">
+          <span class="rlabel"><span class="badge"><svg viewBox="0 0 24 24"><path d="M8 8l8 8m0 0v-6m0 6h-6"/></svg></span>Food</span>
+          <video src="videos/reel-chamaneiro-food.mp4" autoplay muted loop playsinline preload="metadata"></video>
+        </article>
+        <article class="reel-item">
+          <span class="rlabel"><span class="badge"><svg viewBox="0 0 24 24"><path d="M8 8l8 8m0 0v-6m0 6h-6"/></svg></span>Tech</span>
+          <video src="videos/reel-projetor-tech.mp4" autoplay muted loop playsinline preload="metadata"></video>
+        </article>
+        <article class="reel-item">
+          <span class="rlabel"><span class="badge"><svg viewBox="0 0 24 24"><path d="M8 8l8 8m0 0v-6m0 6h-6"/></svg></span>Beauty</span>
+          <video src="videos/reel-secador-beauty.mp4" autoplay muted loop playsinline preload="metadata"></video>
+        </article>
+        <article class="reel-item">
+          <span class="rlabel"><span class="badge"><svg viewBox="0 0 24 24"><path d="M8 8l8 8m0 0v-6m0 6h-6"/></svg></span>Food</span>
+          <video src="videos/reel-cha-food.mp4" autoplay muted loop playsinline preload="metadata"></video>
+        </article>
+        <article class="reel-item">
+          <span class="rlabel"><span class="badge"><svg viewBox="0 0 24 24"><path d="M8 8l8 8m0 0v-6m0 6h-6"/></svg></span>Tech</span>
+          <video src="videos/reel-fonejbl-tech.mp4" autoplay muted loop playsinline preload="metadata"></video>
+        </article>
+        <article class="reel-item vertical">
+          <span class="rlabel"><span class="badge"><svg viewBox="0 0 24 24"><path d="M8 8l8 8m0 0v-6m0 6h-6"/></svg></span>Beauty</span>
+          <video src="videos/reel-creme-beauty.mp4" autoplay muted loop playsinline preload="metadata"></video>
+        </article>
+
+        <!-- ===== CÓPIA (leva 2 · .dup) — idêntica à leva 1, p/ loop sem costura ===== -->
+        <article class="reel-item dup" aria-hidden="true">
+          <span class="rlabel"><span class="badge"><svg viewBox="0 0 24 24"><path d="M8 8l8 8m0 0v-6m0 6h-6"/></svg></span>Tech</span>
+          <video src="videos/reel-alexa-tech.mp4" autoplay muted loop playsinline preload="metadata"></video>
+        </article>
+        <article class="reel-item dup" aria-hidden="true">
+          <span class="rlabel"><span class="badge"><svg viewBox="0 0 24 24"><path d="M8 8l8 8m0 0v-6m0 6h-6"/></svg></span>Beauty</span>
+          <video src="videos/reel-aqualea-beauty.mp4" autoplay muted loop playsinline preload="metadata"></video>
+        </article>
+        <article class="reel-item dup" aria-hidden="true">
+          <span class="rlabel"><span class="badge"><svg viewBox="0 0 24 24"><path d="M8 8l8 8m0 0v-6m0 6h-6"/></svg></span>Food</span>
+          <video src="videos/reel-sorvete-food.mp4" autoplay muted loop playsinline preload="metadata"></video>
+        </article>
+        <article class="reel-item dup" aria-hidden="true">
+          <span class="rlabel"><span class="badge"><svg viewBox="0 0 24 24"><path d="M8 8l8 8m0 0v-6m0 6h-6"/></svg></span>Fashion</span>
+          <video src="videos/reel-tenisvans-moda.mp4" autoplay muted loop playsinline preload="metadata"></video>
+        </article>
+        <article class="reel-item dup" aria-hidden="true">
+          <span class="rlabel"><span class="badge"><svg viewBox="0 0 24 24"><path d="M8 8l8 8m0 0v-6m0 6h-6"/></svg></span>Tech</span>
+          <video src="videos/reel-airpods-tech.mp4" autoplay muted loop playsinline preload="metadata"></video>
+        </article>
+        <article class="reel-item dup" aria-hidden="true">
+          <span class="rlabel"><span class="badge"><svg viewBox="0 0 24 24"><path d="M8 8l8 8m0 0v-6m0 6h-6"/></svg></span>Beauty</span>
+          <video src="videos/reel-hidratante-beauty.mp4" autoplay muted loop playsinline preload="metadata"></video>
+        </article>
+        <article class="reel-item vertical dup" aria-hidden="true">
+          <span class="rlabel"><span class="badge"><svg viewBox="0 0 24 24"><path d="M8 8l8 8m0 0v-6m0 6h-6"/></svg></span>Food</span>
+          <video src="videos/reel-chamaneiro-food.mp4" autoplay muted loop playsinline preload="metadata"></video>
+        </article>
+        <article class="reel-item dup" aria-hidden="true">
+          <span class="rlabel"><span class="badge"><svg viewBox="0 0 24 24"><path d="M8 8l8 8m0 0v-6m0 6h-6"/></svg></span>Tech</span>
+          <video src="videos/reel-projetor-tech.mp4" autoplay muted loop playsinline preload="metadata"></video>
+        </article>
+        <article class="reel-item dup" aria-hidden="true">
+          <span class="rlabel"><span class="badge"><svg viewBox="0 0 24 24"><path d="M8 8l8 8m0 0v-6m0 6h-6"/></svg></span>Beauty</span>
+          <video src="videos/reel-secador-beauty.mp4" autoplay muted loop playsinline preload="metadata"></video>
+        </article>
+        <article class="reel-item dup" aria-hidden="true">
+          <span class="rlabel"><span class="badge"><svg viewBox="0 0 24 24"><path d="M8 8l8 8m0 0v-6m0 6h-6"/></svg></span>Food</span>
+          <video src="videos/reel-cha-food.mp4" autoplay muted loop playsinline preload="metadata"></video>
+        </article>
+        <article class="reel-item dup" aria-hidden="true">
+          <span class="rlabel"><span class="badge"><svg viewBox="0 0 24 24"><path d="M8 8l8 8m0 0v-6m0 6h-6"/></svg></span>Tech</span>
+          <video src="videos/reel-fonejbl-tech.mp4" autoplay muted loop playsinline preload="metadata"></video>
+        </article>
+        <article class="reel-item vertical dup" aria-hidden="true">
+          <span class="rlabel"><span class="badge"><svg viewBox="0 0 24 24"><path d="M8 8l8 8m0 0v-6m0 6h-6"/></svg></span>Beauty</span>
+          <video src="videos/reel-creme-beauty.mp4" autoplay muted loop playsinline preload="metadata"></video>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== POR QUE VÍDEO ===================== -->
+  <section class="section why reveal tone-cream">
+    <span class="eyebrow">Why video</span>
+    <h2 class="section-h2">A photo sits still.<br><span class="g">Your product shouldn't.</span></h2>
+    <p class="lead">A still image gets scrolled past. A short animation stops the thumb, holds the eye, and does the selling for you.</p>
+    <div class="cards">
+      <div class="bcard">
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M13 2 3 14h7l-1 8 10-12h-7z"/></svg></span>
+        <h3>Stops the scroll</h3>
+        <p>Movement freezes the thumb exactly where a static photo gets skipped.</p>
+      </div>
+      <div class="bcard">
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg></span>
+        <h3>Converts more</h3>
+        <p>Video on the product page lifts add to cart and sales. Plain and simple.</p>
+      </div>
+      <div class="bcard">
+        <span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/></svg></span>
+        <h3>More pull than a photo</h3>
+        <p>Motion grabs attention and holds it far longer than any still image.</p>
+      </div>
+      <div class="bcard">
+        <span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M10 8l6 4-6 4z"/></svg></span>
+        <h3>Sells on its own</h3>
+        <p>The video makes the pitch for you in 15 seconds. No salesperson needed.</p>
+      </div>
+      <div class="bcard">
+        <span class="ic"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></span>
+        <h3>Better social ads</h3>
+        <p>Feeds are built for video: stronger hooks, cheaper clicks, more reach.</p>
+      </div>
+      <div class="bcard">
+        <span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M8.2 13.9 7 22l5-3 5 3-1.2-8.1"/></svg></span>
+        <h3>Stand out</h3>
+        <p>While competitors post flat photos, your product actually moves.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== O QUE FAZEMOS ===================== -->
+  <section class="section reveal tone-char">
+    <span class="eyebrow">What we do</span>
+    <h2 class="section-h2">Short videos that make<br><span class="g">products move.</span></h2>
+    <p class="lead">You send the product, we turn it into a scroll stopping animation. Any length, any format, ready for wherever you post it.</p>
+    <div class="niches">
+      <span>Beauty</span><span>Tech</span><span>Food</span><span>Fashion</span><span class="plus">+ your niche</span>
+    </div>
+    <div class="cards two">
+      <div class="bcard">
+        <span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+        <h3>Any length</h3>
+        <p>10 to 60 seconds, whatever the platform and the product call for.</p>
+      </div>
+      <div class="bcard">
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M6 2v14a2 2 0 0 0 2 2h14"/><path d="M18 22V8a2 2 0 0 0-2-2H2"/></svg></span>
+        <h3>Any format</h3>
+        <p>16:9 for your site, 9:16 for Reels &amp; TikTok, 1:1 for the feed.</p>
+      </div>
+      <div class="bcard">
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M22 9l-6 6M16 9l6 6"/></svg></span>
+        <h3>Made for sound off</h3>
+        <p>Autoplay, muted and looping. Built to work with the sound off.</p>
+      </div>
+      <div class="bcard">
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg></span>
+        <h3>Motion &amp; 3D</h3>
+        <p>Product reveals, hype trailers, lifestyle motion and full 3D.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== COMO FUNCIONA (3 passos) ===================== -->
+  <!-- Sem preço de propósito: aqui a gente mata a fricção do processo.
+       O único placeholder é o PRAZO no passo 02 (procure "~5 days"). -->
+  <section class="plans-wrap tone-amber">
+    <div class="plans-head">
+      <h2>How it <span class="g">works.</span></h2>
+      <p>Three steps, that's the whole process. You send it, we animate it, and you only pay if you love it.</p>
+    </div>
+    <div class="plans">
+
+      <div class="plan">
+        <div class="card">
+          <div class="head">
+            <span class="badge"><b>1</b></span>
+            <b>Send your product</b>
+          </div>
+          <div class="body">
+            <p class="desc">A few photos or a link, plus a<br>quick brief. No long calls.</p>
+            <div class="meta">You → me</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="plan pop">
+        <div class="card">
+          <div class="head">
+            <span class="badge"><b>2</b></span>
+            <b>I animate it</b>
+          </div>
+          <div class="body">
+            <p class="desc">A product video made for sound off,<br>10 to 60s, whatever fits.</p>
+            <!-- TROQUE "~5 days" pelo seu prazo real de entrega -->
+            <div class="meta">Ready in <b>~3 days</b></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="plan">
+        <div class="card">
+          <div class="head">
+            <span class="badge"><b>3</b></span>
+            <b>Pay only if you love it</b>
+          </div>
+          <div class="body">
+            <p class="desc">See the finished video first.<br>Not a scroll stopper? You don't pay.</p>
+            <div class="meta"><b>Zero-risk</b></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===================== QUEM SOMOS ===================== -->
+  <!-- TROQUE o texto abaixo pela história real de vocês.
+       FOTOS: dentro de cada <span class="av">, descomente o <img> e aponte pro arquivo
+       (ex.: fotos/lopes.jpg). Enquanto não tiver foto, aparece um ícone de câmera. -->
+  <section class="section who reveal tone-char">
+    <span class="eyebrow" style="justify-content:center;display:flex;">Who we are</span>
+    <h2 class="section-h2">Two designers,<br><span class="g">one studio.</span></h2>
+    <p class="lead">We're Lopes and Vieira, a small motion studio obsessed with making products move. We started 2hundred because most product pages still lean on flat photos while the brands that win are already animating everything. Our deal is simple: send us your product, we make it move, and you only pay if you love it.</p>
+    <div class="who-people">
+      <div class="person">
+        <span class="av"><img src="fotos/lopes.jpg" alt="Lopes"></span>
+        <b>Lopes</b><span>Motion &amp; 3D</span>
+      </div>
+      <div class="person">
+        <span class="av"><img src="fotos/vieira.jpg" alt="Vieira"></span>
+        <b>Vieira</b><span>Motion &amp; 3D</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FAQ ===================== -->
+  <section class="section faq reveal tone-cream">
+    <span class="eyebrow">FAQ</span>
+    <h2 class="section-h2">Quick <span class="g">answers.</span></h2>
+    <div style="margin-top:38px;">
+      <details open>
+        <summary>How fast do you deliver?</summary>
+        <!-- TROQUE o prazo se for diferente -->
+        <div class="a">Most videos are ready in about 3 days from the moment you send your product.</div>
+      </details>
+      <details>
+        <summary>What if I don't like it?</summary>
+        <div class="a">Then you don't pay. You see the finished video first, and if it's not a scroll stopper, you owe nothing.</div>
+      </details>
+      <details>
+        <summary>What do you need from me?</summary>
+        <div class="a">A few photos or a link to your product, plus a quick brief on what you want. No long calls.</div>
+      </details>
+      <details>
+        <summary>What formats do I get?</summary>
+        <div class="a">Whatever fits: 16:9 for your site or YouTube, 9:16 for Reels &amp; TikTok, 1:1 for the feed, from 10 to 60 seconds.</div>
+      </details>
+      <details>
+        <summary>Do you do revisions?</summary>
+        <!-- AJUSTE quantas revisões vocês incluem -->
+        <div class="a">Yes. We tweak until it's right before you sign off.</div>
+      </details>
+      <details>
+        <summary>Who owns the video?</summary>
+        <div class="a">You do. Once it's paid, the video is yours to post anywhere, for as long as you want.</div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ===================== CTA ===================== -->
+  <div class="cta-wrap">
+    <section class="cta">
+      <h2>Let's make your<br><span class="g">product</span> move.</h2>
+      <p>You bring the product. We'll turn it into a scroll stopper, 10 to 60 seconds, whatever fits.</p>
+      <div class="btn-row">
+        <!-- TROQUE pelo e-mail de vocês (aparece no botão e no href) -->
+        <a class="btn btn-primary" href="mailto:2hundred.motiondesign@gmail.com?subject=Motion%203D%20Video%20-%20Service%20Request&body=Hi%202hundred%20team%2C%0D%0A%0D%0AI%27d%20like%20a%20product%20motion%20video.%20Details%20below%3A%0D%0A%0D%0A-%20Product%20name%3A%0D%0A-%20Short%20description%20%28what%20it%20is%20%2F%20main%20feature%29%3A%0D%0A-%20Formats%20needed%20%2816%3A9%20%2F%209%3A16%20%2F%201%3A1%29%3A%0D%0A-%20Length%20%2810-60s%29%3A%0D%0A-%20Deadline%20%28if%20any%29%3A%0D%0A-%20Reference%20or%20vibe%20%28optional%29%3A%0D%0A%0D%0AI%27m%20attaching%20a%20few%20photos%20%2F%20a%20product%20link.%0D%0A%0D%0AThanks%21">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+          Send us an email
+        </a>
+      </div>
+      <p class="cta-note">or just hit reply on the email that brought you here.</p>
+    </section>
+    <div class="colophon">
+      <span>© 2026 2hundred. All rights reserved.</span>
+      <span>Motion &amp; 3D, made to sell.</span>
+    </div>
+  </div>
+
+<script>
+  /* reveal ao entrar na tela (seções do corpo) */
+  const revealEls = document.querySelectorAll('.reveal');
+  const reveal = new IntersectionObserver((es)=>{
+    es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in-view'); reveal.unobserve(e.target); } });
+  }, { threshold:0.12 });
+  revealEls.forEach(el=>reveal.observe(el));
+
+  /* play/pause dos vídeos da esteira — só toca o que está visível (leve p/ abrir de e-mail) */
+  const vids = document.querySelectorAll('.reel-item video');
+  if(vids.length){
+    const player = new IntersectionObserver((es)=>{
+      es.forEach(e=>{ const v=e.target;
+        if(e.isIntersecting){ v.play().catch(()=>{}); } else { v.pause(); } });
+    }, { threshold:0.35 });
+    vids.forEach(v=>player.observe(v));
+  }
+
+  /* glow que segue o cursor no hero (só sem reduced-motion e com mouse) */
+  const okMotion = matchMedia('(prefers-reduced-motion: no-preference)').matches;
+  const finePointer = matchMedia('(pointer: fine)').matches;
+  if(okMotion && finePointer){
+    const hero = document.querySelector('.hero');
+    if(hero){
+      hero.addEventListener('pointermove', (ev)=>{
+        const r = hero.getBoundingClientRect();
+        hero.style.setProperty('--hx', ((ev.clientX - r.left) / r.width  * 100) + '%');
+        hero.style.setProperty('--hy', ((ev.clientY - r.top)  / r.height * 100) + '%');
+      });
+    }
+  }
+
+  /* ---- AURORA: manchas de luz que fluem e se misturam (fundo vivo) ----
+     várias "bolhas" de cor da paleta em movimento Lissajous, desenhadas em modo
+     aditivo ('lighter') — onde se cruzam, acende. Respiram e nunca repetem igual. */
+  const canvas = document.querySelector('.hero-flow');
+  if(canvas && okMotion){
+    const ctx = canvas.getContext('2d');
+    let W=0, H=0, DPR=1, raf=0, visible=true;
+    const hexA = (hex,a)=>{ const n=parseInt(hex.slice(1),16); return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${a})`; };
+    // bolhas: cor, centro-base (0..1), amplitude, frequência, fase, raio (fração de min(W,H))
+    const BLOBS = [
+      { c:'#c9822a', bx:.30, by:.42, ax:.16, ay:.12, fx:.070, fy:.090, ph:0.0, r:.46 },
+      { c:'#e0a860', bx:.62, by:.32, ax:.18, ay:.15, fx:.055, fy:.075, ph:1.4, r:.40 },
+      { c:'#78a6ff', bx:.74, by:.60, ax:.15, ay:.17, fx:.085, fy:.060, ph:2.7, r:.38 },
+      { c:'#8b5cf6', bx:.44, by:.66, ax:.20, ay:.13, fx:.065, fy:.100, ph:4.1, r:.44 },
+      { c:'#5a3ce0', bx:.86, by:.26, ax:.13, ay:.15, fx:.078, fy:.068, ph:5.2, r:.36 },
+      { c:'#b39dff', bx:.18, by:.72, ax:.16, ay:.14, fx:.090, fy:.058, ph:0.8, r:.32 }
+    ];
+    const TAU = Math.PI*2;
+
+    const resize = () => {
+      const r = canvas.getBoundingClientRect();
+      W=r.width; H=r.height; DPR=Math.min(2, window.devicePixelRatio||1);
+      canvas.width=W*DPR; canvas.height=H*DPR;
+      ctx.setTransform(DPR,0,0,DPR,0,0);
+    };
+
+    const frame = (now) => {
+      const t = now*0.001, base = Math.min(W,H);
+      ctx.clearRect(0,0,W,H);
+      ctx.globalCompositeOperation='lighter';
+      for(const b of BLOBS){
+        const cx = (b.bx + Math.sin(t*b.fx*TAU + b.ph)*b.ax)*W;
+        const cy = (b.by + Math.cos(t*b.fy*TAU + b.ph)*b.ay)*H;
+        const rr = b.r*base*(0.88 + Math.sin(t*0.5 + b.ph)*0.14);   // respira
+        const g = ctx.createRadialGradient(cx,cy,0, cx,cy,rr);
+        g.addColorStop(0,   hexA(b.c,0.36));
+        g.addColorStop(0.45,hexA(b.c,0.10));
+        g.addColorStop(1,   hexA(b.c,0));
+        ctx.fillStyle=g;
+        ctx.fillRect(cx-rr, cy-rr, rr*2, rr*2);   // só a área da bolha (leve)
+      }
+      ctx.globalCompositeOperation='source-over';
+      raf = requestAnimationFrame(frame);
+    };
+
+    const start = () => { if(!raf && visible) raf=requestAnimationFrame(frame); };
+    const stop  = () => { cancelAnimationFrame(raf); raf=0; };
+
+    resize(); start();
+    addEventListener('resize', ()=>{ stop(); resize(); start(); }, {passive:true});
+    new IntersectionObserver((es)=>{ visible=es[0].isIntersecting; visible?start():stop(); }, {threshold:0}).observe(canvas);
+  }
+</script>
+</body>
+</html>
