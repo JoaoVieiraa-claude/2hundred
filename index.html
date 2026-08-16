@@ -100,6 +100,20 @@
   @keyframes pulse{ 0%{ box-shadow:0 0 0 0 rgba(126,226,154,.5); }
     70%{ box-shadow:0 0 0 7px rgba(126,226,154,0); } 100%{ box-shadow:0 0 0 0 rgba(126,226,154,0); } }
 
+  /* CTA fixo no header (acompanha o scroll porque o header é sticky) */
+  .hdr-cta{ display:inline-flex; align-items:center; gap:7px; padding:9px 17px; border-radius:100px;
+    background:var(--grad); color:#241207; font-family:"Inter",sans-serif; font-weight:600; font-size:13.5px;
+    letter-spacing:.01em; white-space:nowrap; box-shadow:0 6px 18px rgba(224,132,44,.32);
+    transition:transform .2s ease, box-shadow .2s ease; }
+  .hdr-cta:hover{ transform:translateY(-1px); box-shadow:0 10px 26px rgba(224,132,44,.5); }
+  .hdr-cta svg{ width:15px; height:15px; }
+  @media (max-width:560px){
+    .brand b{ font-size:26px; } .mark{ height:26px; }
+    header{ padding:12px 16px; }
+    .hdr-cta{ padding:8px 13px; font-size:12.5px; gap:5px; }
+    .hdr-cta .lbl{ display:none; }   /* no celular vira só "Start ↗" pra caber */
+  }
+
   /* ---------------- HERO (com vídeo de fundo) ---------------- */
   .hero{
     position:relative; overflow:hidden;
@@ -620,7 +634,10 @@
       <span class="mark"><svg viewBox="34 40 43 59" aria-label="2hundred"><defs><linearGradient id="mk" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f5b64f"/><stop offset="1" stop-color="#e0842c"/></linearGradient></defs><path d="M43 45L73 45L73 78L56 78" fill="none" stroke="url(#mk)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><path d="M56 62L39 62L39 95L69 95" fill="none" stroke="url(#mk)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       <b>hund<span class="red">Red</span></b>
     </div>
-    <div class="status"><span class="dot"></span>Available for work</div>
+    <a class="hdr-cta" data-cta href="mailto:2hundred.motiondesign@gmail.com?subject=Motion%203D%20Video%20-%20Service%20Request">
+      Start<span class="lbl">&nbsp;a project</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
   </header>
 
   <!-- ===================== HERO ===================== -->
@@ -967,7 +984,7 @@
       <p>You bring the product. We'll turn it into a scroll stopper, 10 to 60 seconds, whatever fits.</p>
       <div class="btn-row">
         <!-- TROQUE pelo e-mail de vocês (aparece no botão e no href) -->
-        <a class="btn btn-primary" href="mailto:2hundred.motiondesign@gmail.com?subject=Motion%203D%20Video%20-%20Service%20Request&body=Hi%202hundred%20team%2C%0D%0A%0D%0AI%27d%20like%20a%20product%20motion%20video.%20Details%20below%3A%0D%0A%0D%0A-%20Product%20name%3A%0D%0A-%20Short%20description%20%28what%20it%20is%20%2F%20main%20feature%29%3A%0D%0A-%20Formats%20needed%20%2816%3A9%20%2F%209%3A16%20%2F%201%3A1%29%3A%0D%0A-%20Length%20%2810-60s%29%3A%0D%0A-%20Deadline%20%28if%20any%29%3A%0D%0A-%20Reference%20or%20vibe%20%28optional%29%3A%0D%0A%0D%0AI%27m%20attaching%20a%20few%20photos%20%2F%20a%20product%20link.%0D%0A%0D%0AThanks%21">
+        <a class="btn btn-primary" data-cta href="mailto:2hundred.motiondesign@gmail.com?subject=Motion%203D%20Video%20-%20Service%20Request&body=Hi%202hundred%20team%2C%0D%0A%0D%0AI%27d%20like%20a%20product%20motion%20video.%20Details%20below%3A%0D%0A%0D%0A-%20Product%20name%3A%0D%0A-%20Short%20description%20%28what%20it%20is%20%2F%20main%20feature%29%3A%0D%0A-%20Formats%20needed%20%2816%3A9%20%2F%209%3A16%20%2F%201%3A1%29%3A%0D%0A-%20Length%20%2810-60s%29%3A%0D%0A-%20Deadline%20%28if%20any%29%3A%0D%0A-%20Reference%20or%20vibe%20%28optional%29%3A%0D%0A%0D%0AI%27m%20attaching%20a%20few%20photos%20%2F%20a%20product%20link.%0D%0A%0D%0AThanks%21">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
           Send us an email
         </a>
@@ -987,6 +1004,23 @@
     es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in-view'); reveal.unobserve(e.target); } });
   }, { threshold:0.12 });
   revealEls.forEach(el=>reveal.observe(el));
+
+  /* CTA de e-mail: celular abre o APP (mailto), PC abre no NAVEGADOR (Gmail compose) */
+  (function(){
+    const TO='2hundred.motiondesign@gmail.com';
+    const SU='Motion 3D Video - Service Request';
+    const BODY="Hi 2hundred team,\n\nI'd like a product motion video. Details below:\n\n- Product name:\n- Short description (what it is / main feature):\n- Formats needed (16:9 / 9:16 / 1:1):\n- Length (10-60s):\n- Deadline (if any):\n- Reference or vibe (optional):\n\nI'm attaching a few photos / a product link.\n\nThanks!";
+    const isMobile=/Android|iPhone|iPad|iPod|Mobile|Silk|Kindle|BlackBerry|Opera Mini|IEMobile/i.test(navigator.userAgent);
+    const enc=encodeURIComponent;
+    document.querySelectorAll('[data-cta]').forEach(a=>{
+      if(isMobile){
+        a.href=`mailto:${TO}?subject=${enc(SU)}&body=${enc(BODY)}`;
+      }else{
+        a.href=`https://mail.google.com/mail/?view=cm&fs=1&to=${enc(TO)}&su=${enc(SU)}&body=${enc(BODY)}`;
+        a.target='_blank'; a.rel='noopener';
+      }
+    });
+  })();
 
   /* play/pause dos vídeos da esteira — só toca o que está visível (leve p/ abrir de e-mail) */
   const vids = document.querySelectorAll('.reel-item video');
